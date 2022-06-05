@@ -108,14 +108,16 @@ def main(date=None):
 # main("2021-08-15")
 
 from prefect.deployments import DeploymentSpec
-from prefect.orion.schemas.schedules import IntervalSchedule
+from prefect.orion.schemas.schedules import CronSchedule
 from prefect.flow_runners import SubprocessFlowRunner
 from datetime import timedelta
 
 DeploymentSpec(
     flow=main,
     name="model_training",
-    schedule=IntervalSchedule(interval=timedelta(minutes=5)),
+    schedule=CronSchedule(
+        cron="0 9 15 * *",
+        timezone="America/New_York"),
     flow_runner=SubprocessFlowRunner(),
     tags=["ml"]
 )
